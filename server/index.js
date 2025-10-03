@@ -8,6 +8,7 @@ const socket = require("socket.io");
 require("dotenv").config();
 
 app.use(cors());
+app.options("*", (req, res) => res.sendStatus(200));
 app.use(express.json());
 
 mongoose
