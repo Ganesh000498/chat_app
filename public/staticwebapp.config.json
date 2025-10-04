@@ -3,12 +3,12 @@
     {
       "route": "/api/{*rest}",
       "rewrite": "http://52.172.26.253:5000/api/{rest}",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      "methods": ["GET","POST","PUT","DELETE","OPTIONS"],
       "allowedRoles": ["anonymous"]
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/api/*"]
+    "exclude": [ "/api/*", "/static/*", "/favicon.ico", "/robots.txt" ]
   }
 }
