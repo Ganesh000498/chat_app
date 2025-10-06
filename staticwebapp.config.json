@@ -1,14 +1,19 @@
 {
   "routes": [
     {
-      "route": "/api/{*rest}",
-      "rewrite": "http://52.172.26.253:5000/api/{rest}",
-      "methods": ["GET","POST","PUT","DELETE","OPTIONS"],
-      "allowedRoles": ["anonymous"]
+      "route": "/api/*",
+      "rewrite": "http://52.172.26.253:5000/api/{*}",
+      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    },
+    {
+      "route": "/*",
+      "serve": "/index.html"
     }
   ],
-  "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": [ "/api/*", "/static/*", "/favicon.ico", "/robots.txt" ]
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html"
+    }
   }
 }
+
