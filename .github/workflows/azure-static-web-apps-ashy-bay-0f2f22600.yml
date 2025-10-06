@@ -28,8 +28,8 @@ jobs:
           action: "upload"
           app_location: "public"      # frontend folder where package.json lives
           api_location: ""            # empty if backend stays on VM (do NOT set server here)
-          output_location: "build"
-          config_file_location: .
+          output_location: "public/build"
+          config_file_location: "public/staticwebapp.config.json" # Location of your staticwebapp.config.json file
 
 
   close_pull_request_job:
