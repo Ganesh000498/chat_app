@@ -27,7 +27,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
           app_location: "public"      # frontend folder where package.json lives
-          api_location: ""            # empty if backend stays on VM (do NOT set server here)
+          api_location: "api"            # empty if backend stays on VM (do NOT set server here)
           output_location: "build"
           config_file_location: "public" # Location of your staticwebapp.config.json file
 
