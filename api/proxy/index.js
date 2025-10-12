@@ -7,20 +7,43 @@ module.exports = async function (context, req) {
   context.log(`Query: ${JSON.stringify(context.req.query)}`);
   context.log(`Body: ${JSON.stringify(req.body)}`);
 
-  // Simple test - just return the request info
-  context.res = {
-    status: 200,
-    body: {
-      message: "Function is working",
-      originalUrl: context.req.url,
+  const backendBaseUrl = "http://52.172.26.253:5000";
+  
+  // Extract the path from the query parameters
+  // For /api/ping, the path should be in req.query.restOfPath as "ping"
+  let apiPath = "/";
+  if (context.req.query && context.req.query.restOfPath) {
+    apiPath = `/${context.req.query.restOfPath}`;
+  }
+  
+  const backendUrl = `${backendBaseUrl}${apiPath}`;
+  context.log(`Proxying request to: ${backendUrl}`);
+
+  try {
+    const response = await fetch(backendUrl, {
       method: req.method,
-      query: context.req.query,
-      body: req.body
-    },
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization"
-    }
-  };
+      headers: { 
+        "Content-Type": "application/json",
+        ...req.headers
+      },
+      body: req.body ? JSON.stringify(req.body) : undefined
+    });
+
+    const data = await response.json();
+    context.res = {
+      status: response.status,
+      body: data,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization"
+      }
+    };
+  } catch (err) {
+    context.log(`Error: ${err.message}`);
+    context.res = {
+      status: 500,
+      body: { error: err.message }
+    };
+  }
 };
