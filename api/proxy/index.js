@@ -2,11 +2,18 @@ const fetch = require("node-fetch");
 
 module.exports = async function (context, req) {
   context.log('JavaScript HTTP trigger function processed a request.');
+  context.log(`Original URL: ${context.req.url}`);
+  context.log(`Query: ${JSON.stringify(context.req.query)}`);
 
   const backendBaseUrl = "http://52.172.26.253:5000";
-  const apiPath = context.req.url.replace("/api", "");
+  
+  // Extract the path after /api/proxy
+  let apiPath = context.req.url.replace("/api/proxy", "");
+  if (!apiPath) {
+    apiPath = "/";
+  }
+  
   const backendUrl = `${backendBaseUrl}${apiPath}`;
-
   context.log(`Proxying request to: ${backendUrl}`);
 
   try {
