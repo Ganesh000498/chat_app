@@ -10,10 +10,23 @@ module.exports = async function (context, req) {
   const backendBaseUrl = "http://52.172.26.253:5000";
   
   // Extract the path from the query parameters
-  // For /api/ping, the path should be in req.query.restOfPath as "ping"
+  // For /api/auth/register, the path should be in req.query.restOfPath as "auth/register"
   let apiPath = "/";
   if (context.req.query && context.req.query.restOfPath) {
     apiPath = `/${context.req.query.restOfPath}`;
+  } else {
+    // If restOfPath is not available, try to extract from the original URL
+    // The URL should be something like /api/proxy?restOfPath=auth/register
+    context.log('restOfPath not found in query, trying to extract from URL');
+    const urlParts = context.req.url.split('?');
+    if (urlParts.length > 1) {
+      const queryString = urlParts[1];
+      const params = new URLSearchParams(queryString);
+      const restOfPath = params.get('restOfPath');
+      if (restOfPath) {
+        apiPath = `/${restOfPath}`;
+      }
+    }
   }
   
   const backendUrl = `${backendBaseUrl}${apiPath}`;
