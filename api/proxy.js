@@ -1,9 +1,13 @@
 const fetch = require("node-fetch");
 
 module.exports = async function (context, req) {
+  context.log('JavaScript HTTP trigger function processed a request.');
+
   const backendBaseUrl = "http://52.172.26.253:5000";
   const apiPath = context.req.url.replace("/api", "");
   const backendUrl = `${backendBaseUrl}${apiPath}`;
+
+  context.log(`Proxying request to: ${backendUrl}`);
 
   try {
     const response = await fetch(backendUrl, {
@@ -26,6 +30,7 @@ module.exports = async function (context, req) {
       }
     };
   } catch (err) {
+    context.log(`Error: ${err.message}`);
     context.res = {
       status: 500,
       body: { error: err.message }
