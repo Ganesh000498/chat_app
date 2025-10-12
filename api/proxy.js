@@ -1,6 +1,6 @@
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 
-export default async function (context, req) {
+module.exports = async function (context, req) {
   const backendBaseUrl = "http://52.172.26.253:5000";
   const apiPath = context.req.url.replace("/api", "");
   const backendUrl = `${backendBaseUrl}${apiPath}`;
@@ -31,4 +31,4 @@ export default async function (context, req) {
       body: { error: err.message }
     };
   }
-}
+};
