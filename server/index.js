@@ -35,7 +35,7 @@ const server = app.listen(process.env.PORT, () =>
 );
 const io = socket(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://your-static-web-app-url.azurestaticapps.net"],
     credentials: true,
   },
 });

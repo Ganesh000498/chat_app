@@ -1,4 +1,5 @@
 export const host = "/api";
+export const socketHost = "http://52.172.26.253:5000";
 export const loginRoute = `${host}/auth/login`;
 export const registerRoute = `${host}/auth/register`;
 export const logoutRoute = `${host}/auth/logout`;
