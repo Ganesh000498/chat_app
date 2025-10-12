@@ -3,12 +3,14 @@ const fetch = require("node-fetch");
 module.exports = async function (context, req) {
   context.log('JavaScript HTTP trigger function processed a request.');
   context.log(`Original URL: ${context.req.url}`);
+  context.log(`Method: ${req.method}`);
   context.log(`Query: ${JSON.stringify(context.req.query)}`);
 
   const backendBaseUrl = "http://52.172.26.253:5000";
   
-  // Extract the path after /api/proxy
-  let apiPath = context.req.url.replace("/api/proxy", "");
+  // For /api/ping, we need to extract /ping
+  // The URL comes as /api/ping, so we replace /api with empty string
+  let apiPath = context.req.url.replace("/api", "");
   if (!apiPath) {
     apiPath = "/";
   }
