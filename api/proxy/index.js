@@ -11,7 +11,7 @@ module.exports = async function (context, req) {
   
   // Extract the path from the query parameters
   // For /api/ping, the path should be in req.query.restOfPath as "ping"
-  let apiPath = "/ping"; // Default to ping for testing
+  let apiPath = "/";
   if (context.req.query && context.req.query.restOfPath) {
     apiPath = `/${context.req.query.restOfPath}`;
   }
