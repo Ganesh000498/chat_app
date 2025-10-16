@@ -7,11 +7,21 @@ import { logoutRoute } from "../utils/APIRoutes";
 export default function Logout() {
   const navigate = useNavigate();
   const handleClick = async () => {
-    const id = await JSON.parse(
-      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-    )._id;
-    const data = await axios.get(`${logoutRoute}/${id}`);
-    if (data.status === 200) {
+    try {
+      const storedData = localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY);
+      if (storedData) {
+        const id = JSON.parse(storedData)._id;
+        try {
+          await axios.get(`${logoutRoute}/${id}`);
+        } catch (error) {
+          console.log("Logout API call failed, but proceeding with local logout");
+        }
+      }
+      localStorage.clear();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Even if there's an error, clear local storage and navigate to login
       localStorage.clear();
       navigate("/login");
     }
